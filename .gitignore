@@ -1,0 +1,11 @@
+node_modules
+dist
+.vscode
+.DS_Store
+*.pptx
+*.zip
+pptx_content/
+tmp_pptx/
+extracted_text.txt
+seed_session.js
+package-lock.json
