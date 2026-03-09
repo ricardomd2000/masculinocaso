@@ -39,7 +39,7 @@ export default function App() {
                     path="/"
                     element={
                         user ? (
-                            user.email === "ricardomd2000@gmail.com" ? (
+                            user.email === "ricardoaldo@unisabana.edu.co" ? (
                                 <TeacherMonitor session={session} />
                             ) : (
                                 <StudentView session={session} user={user} />
