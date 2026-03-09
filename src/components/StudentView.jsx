@@ -59,7 +59,7 @@ export default function StudentView({ session, user }) {
                 <p style={{ color: "var(--primary)", fontWeight: "700", margin: 0 }}>HBP: CASO JOSÉ RODRIGUEZ</p>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <h1 style={{ margin: 0 }}>Momento {session.currentStep}</h1>
-                    <button onClick={() => auth.signOut()} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.75rem" }}>Cerrar Sesión</button>
+                    <button onClick={onLogout} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "0.75rem" }}>Cambiar Correo</button>
                 </div>
             </header>
 
