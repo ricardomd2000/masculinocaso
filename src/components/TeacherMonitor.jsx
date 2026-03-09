@@ -23,8 +23,18 @@ export default function TeacherMonitor({ session }) {
     }, []);
 
     const changeStep = async (newStep) => {
-        if (newStep < 1 || newStep > 4) return;
-        await setDoc(doc(db, "sessions", "bph_session"), { currentStep: newStep, active: true }, { merge: true });
+        const stepNum = Number(newStep);
+        if (stepNum < 1 || stepNum > 4) return;
+        try {
+            await setDoc(doc(db, "sessions", "bph_session"), {
+                currentStep: stepNum,
+                active: true,
+                lastUpdate: new Date()
+            }, { merge: true });
+        } catch (error) {
+            console.error("Error changing step:", error);
+            alert("Error al cambiar de momento: No tienes permisos suficientes o hay un problema de conexión.");
+        }
     };
 
     return (
@@ -68,8 +78,8 @@ export default function TeacherMonitor({ session }) {
                         </div>
                     ))}
                     <div style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}>
-                        <button onClick={() => changeStep(session.currentStep - 1)} disabled={session.currentStep === 1} style={{ flex: 1, padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", background: "white" }}>Anterior</button>
-                        <button onClick={() => changeStep(session.currentStep + 1)} disabled={session.currentStep === 4} style={{ flex: 1, padding: "0.75rem", borderRadius: "0.5rem", border: "none", background: "var(--primary)", color: "white" }}>Siguiente</button>
+                        <button onClick={() => changeStep(Number(session.currentStep) - 1)} disabled={Number(session.currentStep) === 1} style={{ flex: 1, padding: "0.75rem", borderRadius: "0.5rem", border: "1px solid var(--border)", background: "white" }}>Anterior</button>
+                        <button onClick={() => changeStep(Number(session.currentStep) + 1)} disabled={Number(session.currentStep) === 4} style={{ flex: 1, padding: "0.75rem", borderRadius: "0.5rem", border: "none", background: "var(--primary)", color: "white" }}>Siguiente</button>
                     </div>
                 </div>
 
