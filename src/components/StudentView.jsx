@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { Send, BookOpen, Microscope, Stethoscope, ChevronRight } from "lucide-react";
+import { Send, BookOpen, Microscope, Stethoscope, Activity, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function StudentView({ session, user }) {
