@@ -39,7 +39,7 @@ export default function App() {
                     path="/"
                     element={
                         user ? (
-                            user.email === "ricardoaldo@unisabana.edu.co" ? (
+                            ["ricardoaldo@unisabana.edu.co", "mariagalarin@unisabana.edu.co"].includes(user.email) ? (
                                 <TeacherMonitor session={session} />
                             ) : (
                                 <StudentView session={session} user={user} />
