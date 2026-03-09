@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { LogIn, UserCircle, GraduationCap } from "lucide-react";
+import { AUTHORIZED_EMAILS } from "../authorized_emails";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -12,20 +13,32 @@ export default function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
+
+        const cleanEmail = email.trim().toLowerCase();
+
         try {
             if (isTeacher) {
-                await signInWithEmailAndPassword(auth, email, password);
+                await signInWithEmailAndPassword(auth, cleanEmail, password);
             } else {
-                // Simple flow for students: institutional email + fixed password
-                if (!email.includes("@")) {
-                    setError("Por favor ingresa un correo institucional válido.");
+                if (!AUTHORIZED_EMAILS.includes(cleanEmail)) {
+                    setError("Este correo no tiene autorización para ingresar como estudiante.");
                     return;
                 }
+
+                const studentPass = "estudiante2026";
                 try {
-                    await signInWithEmailAndPassword(auth, email, "estudiante2026");
+                    await signInWithEmailAndPassword(auth, cleanEmail, studentPass);
                 } catch (err) {
-                    if (err.code === "auth/user-not-found") {
-                        await createUserWithEmailAndPassword(auth, email, "estudiante2026");
+                    if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential") {
+                        try {
+                            await createUserWithEmailAndPassword(auth, cleanEmail, studentPass);
+                        } catch (createErr) {
+                            if (createErr.code === "auth/email-already-in-use") {
+                                setError("Error de autenticación. Contacta al docente.");
+                            } else {
+                                throw createErr;
+                            }
+                        }
                     } else {
                         throw err;
                     }
